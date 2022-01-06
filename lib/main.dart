@@ -36,4 +36,8 @@ class MyApp extends StatelessWidget {
     );
   }
 }
+<<<<<<< HEAD
 //지우수정
+=======
+// 태진 수정
+>>>>>>> taejin
