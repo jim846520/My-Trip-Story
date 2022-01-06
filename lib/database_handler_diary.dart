@@ -13,7 +13,7 @@ class SQLDiary {
       )
       """);
   }
-
+ 
   static Future<sql.Database> db() async {
     return sql.openDatabase(
       'trip.db',

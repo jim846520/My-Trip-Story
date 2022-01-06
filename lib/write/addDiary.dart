@@ -88,7 +88,7 @@ class _AddDiaryState extends State<AddDiary> {
                   onPressed: () {
                     // -----
                   },
-                  style: ElevatedButton.styleFrom(
+                  style: ElevatedButton.styleFrom( 
                     primary: Colors.cyan,
                     shape: RoundedRectangleBorder(
                       // 모서리 모양

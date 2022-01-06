@@ -11,7 +11,7 @@ class SQLHelper {
       )
       """);
   }
-
+ 
   static Future<sql.Database> db() async {
     return sql.openDatabase(
       'kindacode.db',

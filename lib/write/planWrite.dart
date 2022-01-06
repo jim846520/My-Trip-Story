@@ -44,9 +44,9 @@ class _PlanWriteState extends State<PlanWrite> {
                   ),
                 ),
                 Container(
-                  height: 500,
+                  height: 500, 
                   margin: const EdgeInsets.fromLTRB(20, 0, 20, 20),
-                  decoration: BoxDecoration(
+                  decoration: BoxDecoration( 
                     borderRadius: BorderRadius.circular(100),
                     color: Colors.white,
                   ),

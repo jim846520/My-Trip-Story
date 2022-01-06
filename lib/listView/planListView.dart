@@ -14,7 +14,7 @@ class _PlanListViewState extends State<PlanListView> {
 
   bool _isLoading = true;
 
-  // 데이터베이스에서 모든 데이터를 가져올 때 사용
+  // 데이터베이스에서 모든 데이터를 가져올 때 사용 
   void _refreshJournals() async {
     final data = await SQLHelper.getItems();
     setState(() {

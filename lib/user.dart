@@ -8,7 +8,7 @@ class User {
     required this.title,
     required this.contents,
   });
-
+ 
   User.fromMap(Map<String, dynamic> res)
       : seq = res["seq"],
         title = res["title"],

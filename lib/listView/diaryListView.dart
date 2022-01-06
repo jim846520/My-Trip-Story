@@ -113,7 +113,7 @@ class _DiaryListViewState extends State<DiaryListView> {
   }
 
   // Update an existing journal
-  Future<void> _updateDiary(int id) async {
+  Future<void> _updateDiary(int id) async { 
     await SQLDiary.updateDiary(
         id, _titleController.text, _contentsController.text, _image);
     _refreshJournals();

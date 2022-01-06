@@ -1,0 +1,4 @@
+#Thu Jan 06 19:16:26 KST 2022
+base.0=C\:\\Users\\LG PC\\Documents\\GitHub\\team129\\build\\app\\intermediates\\dex\\debug\\mergeDexDebug\\classes.dex
+renamed.0=classes.dex
+path.0=classes.dex
