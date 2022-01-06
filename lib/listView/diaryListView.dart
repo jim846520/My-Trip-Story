@@ -1,8 +1,8 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:team129_app/database_handler.dart';
 import 'package:team129_app/database_handler_diary.dart';
-import 'package:team129_app/write/addDiary.dart';
 
 class DiaryListView extends StatefulWidget {
   const DiaryListView({Key? key}) : super(key: key);
@@ -34,7 +34,6 @@ class _DiaryListViewState extends State<DiaryListView> {
 
   final TextEditingController _titleController = TextEditingController();
   final TextEditingController _contentsController = TextEditingController();
-  PickedFile? _image;
 
 // 플러스 버튼 누를 때 실행
   void _showForm(int? id) async {
@@ -51,76 +50,109 @@ class _DiaryListViewState extends State<DiaryListView> {
         context: context,
         elevation: 5,
         isScrollControlled: true,
-        builder: (_) => Container(
-              padding: EdgeInsets.only(
-                top: 15,
-                left: 15,
-                right: 15,
-                // this will prevent the soft keyboard from covering the text fields
-                bottom: MediaQuery.of(context).viewInsets.bottom + 120,
-              ),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: [
-                  TextField(
-                    controller: _titleController,
-                    decoration: const InputDecoration(hintText: '제목을 입력하세요.'),
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  TextField(
-                    controller: _contentsController,
-                    decoration:
-                        const InputDecoration(hintText: '여행 일정을 기록하세요.'),
-                  ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  ElevatedButton(
-                    onPressed: () async {
-                      // Save new journal
-                      if (id == null) {
-                        await _addDiary();
-                      }
-
-                      if (id != null) {
-                        await _updateDiary(id);
-                      }
-
-                      // Clear the text fields
-                      _titleController.text = '';
-                      _contentsController.text = '';
-
-                      // Close the bottom sheet
-                      Navigator.of(context).pop();
-                    },
-                    child: Text(
-                      id == null ? '등록하기' : '수정하기',
-                      style: const TextStyle(color: Colors.white),
+        builder: (_) => SingleChildScrollView(
+          child: Container(
+                padding: EdgeInsets.only(
+                  top: 15,
+                  left: 15,
+                  right: 15,
+                  // this will prevent the soft keyboard from covering the text fields
+                  bottom: MediaQuery.of(context).viewInsets.bottom + 200,
+                ),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    Container(
+                    height: 50,
+                    margin: const EdgeInsets.fromLTRB(20, 0, 20, 20),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(100),
+                      color: Colors.black,
                     ),
-                  )
-                ],
+                    child: CupertinoTextField(
+                      controller: _titleController,
+                      placeholder: '제목을 입력하세요.',
+                      textAlign: TextAlign.center,
+                      keyboardType: TextInputType.text,
+                      
+                    ),
+                  ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    Container(
+                    height: 300,
+                    margin: const EdgeInsets.fromLTRB(20, 0, 20, 20),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(100),
+                      color: Colors.white,
+                    ),
+                    child: CupertinoTextField(
+                      controller: _contentsController,
+                      placeholder: '입력',
+                      textAlign: TextAlign.center,
+                      keyboardType: TextInputType.multiline, // 줄 바꾸기
+                      maxLines: null, // 글자 수 제한 조건
+                    ),
+                  ),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    ElevatedButton(
+                      onPressed: () async {
+                        // Save new journal
+                        if (id == null) {
+                          await _addDiary();
+                        }
+        
+                        if (id != null) {
+                          await _updateDiary(id);
+                        }
+        
+                        // Clear the text fields
+                        _titleController.text = '';
+                        _contentsController.text = '';
+        
+                        // Close the bottom sheet
+                        Navigator.of(context).pop();
+                      },
+                      child: Text(
+                        id == null ? '등록하기' : '수정하기',
+                        style: const TextStyle(color: Colors.white,
+                        fontWeight: FontWeight.w500
+                        ),
+                    
+                      ),
+                      style: ButtonStyle(
+                        backgroundColor: MaterialStateProperty.all(Colors.orange[400]),
+                      ),
+                      
+                  
+                      
+                    )
+                  ],
+                ),
+                color: Colors.cyan[100],
               ),
-            ));
+        ));
   }
 
 // Insert a new journal to the database
   Future<void> _addDiary() async {
-    await SQLDiary.createDiary(_titleController.text, _contentsController.text, _image);
+    await SQLDiary.createDiary(_titleController.text, _contentsController.text);
     _refreshJournals();
   }
 
   // Update an existing journal
-  Future<void> _updateDiary(int id) async { 
+  Future<void> _updateDiary(int id) async {
     await SQLDiary.updateDiary(
-        id, _titleController.text, _contentsController.text, _image);
+        id, _titleController.text, _contentsController.text);
     _refreshJournals();
   }
 
   // Delete an item
-  void _deleteDiary(int id) async {
+  void _delteDiary(int id) async {
     await SQLDiary.deleteDiary(id);
     _showDialog(context);
   }
@@ -135,12 +167,6 @@ class _DiaryListViewState extends State<DiaryListView> {
         actions: [
           IconButton(
             onPressed: () => _showForm(null),
-            icon: const Icon(Icons.add),
-          ),
-          IconButton(
-            onPressed: (){
-              //-----
-            },
             icon: const Icon(Icons.add),
           ),
         ],
@@ -208,7 +234,7 @@ class _DiaryListViewState extends State<DiaryListView> {
                               color: Colors.redAccent,
                             ),
                             onPressed: () =>
-                                _deleteDiary(_journals[index]['id']),
+                                _delteDiary(_journals[index]['id']),
                           ),
                         ],
                       ),
@@ -227,7 +253,7 @@ class _DiaryListViewState extends State<DiaryListView> {
         // 여기 ctx(context)는 Alert부분
         return AlertDialog(
           title: const Text('삭제'),
-          content: const Text('해당 일정을 삭제하시겠습니까?'),
+          content: const Text('일기를 삭제하시겠습니까?'),
           actions: [
             ElevatedButton(
               onPressed: () {

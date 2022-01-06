@@ -8,8 +8,6 @@ class SQLDiary {
         id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
         title TEXT,
         contents TEXT,
-        img BLOB
-        createdAt TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
       )
       """);
   }
@@ -25,10 +23,10 @@ class SQLDiary {
   }
 
   // Create new diary (journal)
-  static Future<int> createDiary(String title, String? contents, var img) async {
+  static Future<int> createDiary(String title, String? contents) async {
     final db = await SQLDiary.db();
 
-    final data = {'title': title, 'contents': contents, 'img':img};
+    final data = {'title': title, 'contents': contents};
     final id = await db.insert('diary', data,
         conflictAlgorithm: sql.ConflictAlgorithm.replace);
     return id;
@@ -48,14 +46,12 @@ class SQLDiary {
   }
 
   // Update an diary by id
-  static Future<int> updateDiary(int id, String title, String? contents, var img) async {
+  static Future<int> updateDiary(int id, String title, String? contents) async {
     final db = await SQLDiary.db();
 
     final data = {
       'title': title,
       'contents': contents,
-      'img' : img,
-      'createdAt': DateTime.now().toString()
     };
 
     final result =
