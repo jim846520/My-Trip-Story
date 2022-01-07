@@ -17,7 +17,7 @@ class SQLDiary {
       'trip.db',
       version: 1,
       onCreate: (sql.Database database, int version) async {
-        await createTables(database);
+        await createTables(database);  
       },
     );
   }

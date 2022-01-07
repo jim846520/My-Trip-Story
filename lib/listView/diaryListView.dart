@@ -81,7 +81,7 @@ class _DiaryListViewState extends State<DiaryListView> {
                     const SizedBox(
                       height: 10,
                     ),
-                    Container(  
+                    Container( 
                     height: 300,
                     margin: const EdgeInsets.fromLTRB(20, 0, 20, 20),
                     decoration: BoxDecoration( 
