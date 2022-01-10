@@ -12,7 +12,7 @@ class DiaryListView extends StatefulWidget {
 }
 
 class _DiaryListViewState extends State<DiaryListView> {
- // All journals
+  // All journals
   List<Map<String, dynamic>> _journals = [];
 
   bool _isLoading = true;
@@ -44,28 +44,26 @@ class _DiaryListViewState extends State<DiaryListView> {
           _journals.firstWhere((element) => element['id'] == id);
       _titleController.text = existingJournal['title'];
       _contentsController.text = existingJournal['contents'];
-      
-    } 
+    }
     showModalBottomSheet(
         context: context,
         elevation: 5,
         isScrollControlled: true,
-        builder: (_) => SingleChildScrollView(
-          child: Container(
-                padding: EdgeInsets.only(
-                  top: 15,
-                  left: 15,
-                  right: 15,
-                  // this will prevent the soft keyboard from covering the text fields
-                  bottom: MediaQuery.of(context).viewInsets.bottom + 200,
-                ),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  children: [
-                    Container(
+        builder: (_) => Container(
+              padding: EdgeInsets.only(
+                top: 15,
+                left: 15,
+                right: 15,
+                // this will prevent the soft keyboard from covering the text fields
+                bottom: MediaQuery.of(context).viewInsets.bottom + 200,
+              ),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  Container(
                     height: 50,
-                    margin: const EdgeInsets.fromLTRB(20, 0, 20, 20),
+                    margin: const EdgeInsets.fromLTRB(20, 30, 20, 20),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(100),
                       color: Colors.black,
@@ -75,67 +73,63 @@ class _DiaryListViewState extends State<DiaryListView> {
                       placeholder: '제목을 입력하세요.',
                       textAlign: TextAlign.center,
                       keyboardType: TextInputType.text,
-                      
                     ),
                   ),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    Container( 
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  Container(
                     height: 300,
                     margin: const EdgeInsets.fromLTRB(20, 0, 20, 20),
-                    decoration: BoxDecoration( 
+                    decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(100),
                       color: Colors.white,
                     ),
                     child: CupertinoTextField(
                       controller: _contentsController,
-                      placeholder: '입력',
+                      placeholder: '내용을 입력하세요.',
                       textAlign: TextAlign.center,
                       keyboardType: TextInputType.multiline, // 줄 바꾸기
                       maxLines: null, // 글자 수 제한 조건
                     ),
                   ),
-                    const SizedBox(
-                      height: 20,
-                    ),
-                    ElevatedButton(
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(0, 0, 20, 0),
+                    child: ElevatedButton(
                       onPressed: () async {
                         // Save new journal
                         if (id == null) {
                           await _addDiary();
                         }
-        
+
                         if (id != null) {
                           await _updateDiary(id);
                         }
-        
+
                         // Clear the text fields
                         _titleController.text = '';
                         _contentsController.text = '';
-        
+
                         // Close the bottom sheet
                         Navigator.of(context).pop();
                       },
                       child: Text(
-                        id == null ? '등록하기' : '수정하기',
-                        style: const TextStyle(color: Colors.white,
-                        fontWeight: FontWeight.w500
-                        ),
-                    
+                        id == null ? '저장' : '수정',
+                        style: const TextStyle(
+                            color: Colors.white, fontWeight: FontWeight.w500),
                       ),
                       style: ButtonStyle(
-                        backgroundColor: MaterialStateProperty.all(Colors.orange[400]),
+                        backgroundColor: MaterialStateProperty.all(Colors.cyan),
                       ),
-                      
-                  
-                      
-                    )
-                  ],
-                ),
-                color: Colors.cyan[100],
+                    ),
+                  )
+                ],
               ),
-        ));
+              color: Colors.grey[300],
+            ));
   }
 
 // Insert a new journal to the database
@@ -167,44 +161,48 @@ class _DiaryListViewState extends State<DiaryListView> {
         actions: [
           IconButton(
             onPressed: () => _showForm(null),
-            icon: const Icon(Icons.add),
+            icon: Image(
+              image: AssetImage('images/add1.png'),
+              width: 25,
+              height: 25,
+            ),
           ),
         ],
       ),
-      drawer: Drawer(
-        child: ListView(
-          children: const [
-            UserAccountsDrawerHeader(
-              currentAccountPicture: CircleAvatar(
-                backgroundImage: AssetImage('images/smile.png'),
-              ),
-              accountName: Text('129'),
-              accountEmail: Text('team129@gmail.com'),
-            ),
-            ListTile(
-              leading: Icon(
-                Icons.airplanemode_active,
-                color: Colors.black,
-              ),
-              title: Text('여행일정'),
-            ),
-            ListTile(
-              leading: Icon(
-                Icons.brush,
-                color: Colors.black,
-              ),
-              title: Text('여행일기'),
-            ),
-            ListTile(
-              leading: Icon(
-                Icons.fmd_good_rounded,
-                color: Colors.black,
-              ),
-              title: Text('세계지도 (추가 예정)'),
-            ),
-          ],
-        ),
-      ),
+      // drawer: Drawer(
+      //   child: ListView(
+      //     children: const [
+      //       UserAccountsDrawerHeader(
+      //         currentAccountPicture: CircleAvatar(
+      //           backgroundImage: AssetImage('images/user.png'),
+      //         ),
+      //         accountName: Text('129'),
+      //         accountEmail: Text('team129@gmail.com'),
+      //       ),
+      //       ListTile(
+      //         leading: Icon(
+      //           Icons.airplanemode_active,
+      //           color: Colors.black,
+      //         ),
+      //         title: Text('여행일정'),
+      //       ),
+      //       ListTile(
+      //         leading: Icon(
+      //           Icons.brush,
+      //           color: Colors.black,
+      //         ),
+      //         title: Text('여행일기'),
+      //       ),
+      //       ListTile(
+      //         leading: Icon(
+      //           Icons.fmd_good_rounded,
+      //           color: Colors.black,
+      //         ),
+      //         title: Text('세계지도 (추가 예정)'),
+      //       ),
+      //     ],
+      //   ),
+      // ),
       body: _isLoading
           ? const Center(
               child: CircularProgressIndicator(),
@@ -213,10 +211,22 @@ class _DiaryListViewState extends State<DiaryListView> {
               itemCount: _journals.length,
               itemBuilder: (context, index) => Card(
                 color: Colors.white,
-                margin: const EdgeInsets.all(15),
+                margin: const EdgeInsets.fromLTRB(15, 15, 15, 0),
                 child: ListTile(
-                    title: Text(_journals[index]['title']),
-                    subtitle: Text(_journals[index]['contents']),
+                    title: Padding(
+                      padding: const EdgeInsets.fromLTRB(0, 0, 0, 10),
+                      child: Text(
+                        _journals[index]['title'],
+                        style: TextStyle(
+                          fontSize: 17,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                    minVerticalPadding: 20,
+                    subtitle: Text(
+                      _journals[index]['contents'],
+                    ),
                     trailing: SizedBox(
                       width: 100,
                       child: Row(
@@ -264,7 +274,10 @@ class _DiaryListViewState extends State<DiaryListView> {
                 _refreshJournals();
                 Navigator.of(ctx).pop();
               },
-              child: const Text('확인'),
+              child: const Text(
+                '확인',
+                style: TextStyle(color: Colors.white),
+              ),
             ),
           ],
         );
